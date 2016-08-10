@@ -1,12 +1,9 @@
 bl_info = {
     "name": "Output from VERSION.txt",
-    "author": "gabriel montagné láscaris-comneno",
+    "author": "gabriel montagné láscaris-comneno, gabriel@tibas.london",
     "version": (0, 0, 1),
     "blender": (2, 75, 0),
-    "description": "Sets render output from VERSION.txt file if found",
-    "warning": "",
-    "wiki_url": "",
-    "category": "Add Mesh",
+    "description": "Sets render output from VERSION.txt file if found"
     }
 
 from bpy.app.handlers import persistent
@@ -23,9 +20,7 @@ def update_out_from_version(scene):
         return
 
     version = open(version_path, 'r').read().strip()
-    filepath = '//target/{}/frame-'.format(version)
-
-    scene.render.filepath = filepath
+    scene.render.filepath = '//target/{}/frame-'.format(version)
 
 def register():
     bpy.app.handlers.render_init.append(update_out_from_version)
@@ -34,7 +29,4 @@ def unregister():
     bpy.app.handlers.render_init.remove(update_out_from_version)
 
 if __name__ == "__main__":
-    ## HHA debug
-    bpy.app.handlers.render_init.clear()
-
     register()
