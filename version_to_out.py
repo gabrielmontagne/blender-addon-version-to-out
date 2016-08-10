@@ -3,7 +3,8 @@ bl_info = {
     "author": "gabriel montagné láscaris-comneno, gabriel@tibas.london",
     "version": (0, 1, 0),
     "blender": (2, 75, 0),
-    "description": "Sets render output from VERSION.txt file if found"
+    "description": "Sets render output from VERSION.txt file if found",
+    "category": "Render"
     }
 
 from bpy.app.handlers import persistent
