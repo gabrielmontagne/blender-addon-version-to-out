@@ -15,16 +15,16 @@ from bpy.app.handlers import persistent
 
 @persistent
 def update_out_from_version(dummy):
-    print("update out from version", dummy)
+    print("update out from version", dummy, bpy.data.filepath)
 
 def register():
-    bpy.app.handlers.render_pre.append(update_out_from_version)
+    bpy.app.handlers.render_init.append(update_out_from_version)
 
 def unregister():
-    bpy.app.handlers.render_pre.remove(update_out_from_version)
-
+    bpy.app.handlers.render_init.remove(update_out_from_version)
 
 if __name__ == "__main__":
-    bpy.app.handlers.render_pre.clear() # HHA debug
-    register()
+    ## HHA debug
+    bpy.app.handlers.render_init.clear()
 
+    register()
