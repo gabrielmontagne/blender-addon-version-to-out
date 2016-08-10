@@ -3,14 +3,12 @@ bl_info = {
     "author": "gabriel montagné láscaris-comneno",
     "version": (0, 0, 1),
     "blender": (2, 75, 0),
-    "location": "View3D > Add > Mesh > New Object",
     "description": "Sets render output from VERSION.txt file if found",
     "warning": "",
     "wiki_url": "",
     "category": "Add Mesh",
     }
 
-import bpy
 from bpy.app.handlers import persistent
 from os import path
 import bpy
