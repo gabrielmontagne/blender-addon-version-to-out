@@ -12,10 +12,21 @@ bl_info = {
 
 import bpy
 from bpy.app.handlers import persistent
+from os import path
+import bpy
+
+version_file = 'VERSION.txt'
 
 @persistent
 def update_out_from_version(dummy):
-    print("update out from version", dummy, bpy.data.filepath)
+    base_dir = path.dirname(bpy.data.filepath)
+    version_path = path.join(base_dir, version_file)
+    if not path.isfile(path.join(base_dir, version_path)):
+        return
+
+    version = open(version_path, 'r').read().strip()
+
+    print("VERSION", version)
 
 def register():
     bpy.app.handlers.render_init.append(update_out_from_version)
