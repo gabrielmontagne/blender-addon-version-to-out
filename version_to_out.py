@@ -20,8 +20,9 @@ def update_out_from_version(scene):
     if not path.isfile(path.join(base_dir, version_path)):
         return
 
+    basename = path.basename(scene.render.filepath)
     version = open(version_path, 'r').read().strip()
-    scene.render.filepath = '//target/{}/frame-'.format(version)
+    scene.render.filepath = '//target/{}/{}'.format(version, basename)
 
 def register():
     bpy.app.handlers.render_init.append(update_out_from_version)
