@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Output from VERSION.txt",
     "author": "gabriel montagné láscaris-comneno, gabriel@tibas.london",
-    "version": (0, 1, 1),
+    "version": (0, 2, 0),
     "blender": (2, 75, 0),
     "description": "Sets render output from VERSION.txt file if found",
     "category": "Render"
