@@ -4,7 +4,9 @@
 When you change frame or when you load a new file this addon will look for a `VERSION.txt` file next to the blend file.
 If found, it will set the output to be `target/{version}/{basename}`, where `basename` was the original basename specified on the `out` field.
 
-NOTE: for performance reasons, the file will only be checked once per session per blend file.
+This will be kept in lock when the file is opened and on every frame change.
+
+WARNING: the `VERSION.txt` will only be read once per session per file—for performance reasons..
 
 Will also add a 'Version to out' section in the render panel with an option to `Nest in subfolders per mark`.
 If this is checked, then the version will change with the last timeline mark from where the cursor is.
