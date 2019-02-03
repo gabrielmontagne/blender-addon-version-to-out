@@ -2,7 +2,7 @@ bl_info = {
     "name": "Output from VERSION.txt",
     "author": "gabriel montagné láscaris-comneno, gabriel@tibas.london",
     "version": (0, 3, 0),
-    "blender": (2, 75, 0),
+    "blender": (2, 80, 0),
     "description": "Sets render output from VERSION.txt file if found",
     "category": "Render"
     }
@@ -46,7 +46,7 @@ def update_out_from_version(scene):
     else:
         scene.render.filepath = '//target/{}/{}/{}'.format(version, name, basename)
 
-class VersionToOutPanel(Panel):
+class VERSION_TO_OUT_PT_config(Panel):
     bl_label = 'Version to out'
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
@@ -56,7 +56,7 @@ class VersionToOutPanel(Panel):
         layout = self.layout
         rd = context.scene.render
         row = layout.row()
-        row.label('Create subfolders per mark')
+        row.label(text='Create subfolders per mark')
         row.prop(context.scene, "subfolder_per_mark", text="")
         row = layout.row()
         row.prop(rd, "filepath", text="")
@@ -66,7 +66,7 @@ def register():
         name='Nest in subfolders per mark',
         default=False)
 
-    bpy.utils.register_class(VersionToOutPanel)
+    bpy.utils.register_class(VERSION_TO_OUT_PT_config)
 
     bpy.app.handlers.frame_change_pre.append(update_out_from_version)
     bpy.app.handlers.load_post.append(update_out_from_version)
@@ -75,6 +75,7 @@ def unregister():
     del Scene.subfolder_per_mark 
     bpy.app.handlers.frame_change_pre.remove(update_out_from_version)
     bpy.app.handlers.load_post.remove(update_out_from_version)
+    bpy.utils.unregister_class(VERSION_TO_OUT_PT_config)
 
 if __name__ == "__main__":
     register()
