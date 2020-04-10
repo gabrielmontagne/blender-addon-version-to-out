@@ -46,6 +46,12 @@ def update_out_from_version(scene):
     else:
         scene.render.filepath = '//target/{}/{}/{}'.format(version, name, basename)
 
+@persistent
+def flush_version_cache(scene):
+    print('flush version cache')
+    global version_map
+    version_map = {}
+
 class VERSION_TO_OUT_PT_config(Panel):
     bl_label = 'Version to out'
     bl_space_type = 'PROPERTIES'
@@ -68,6 +74,7 @@ def register():
 
     bpy.utils.register_class(VERSION_TO_OUT_PT_config)
 
+    bpy.app.handlers.save_pre.append(flush_version_cache)
     bpy.app.handlers.frame_change_pre.append(update_out_from_version)
     bpy.app.handlers.load_post.append(update_out_from_version)
 
@@ -75,6 +82,7 @@ def unregister():
     del Scene.subfolder_per_mark 
     bpy.app.handlers.frame_change_pre.remove(update_out_from_version)
     bpy.app.handlers.load_post.remove(update_out_from_version)
+    bpy.app.handlers.save_pre.remove(flush_version_cache)
     bpy.utils.unregister_class(VERSION_TO_OUT_PT_config)
 
 if __name__ == "__main__":
