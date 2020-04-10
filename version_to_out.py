@@ -18,7 +18,11 @@ version_file = 'VERSION.txt'
 
 @persistent
 def update_out_from_version(scene):
+
     global version_map
+
+    if scene is None:
+        scene = bpy.context.scene
 
     filepath = bpy.data.filepath
     base_dir = path.dirname(filepath)
@@ -48,9 +52,9 @@ def update_out_from_version(scene):
 
 @persistent
 def flush_version_cache(scene):
-    print('flush version cache')
     global version_map
     version_map = {}
+    update_out_from_version(scene)
 
 class VERSION_TO_OUT_PT_config(Panel):
     bl_label = 'Version to out'
