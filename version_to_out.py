@@ -61,7 +61,7 @@ class VERSION_TO_OUT_PT_config(Panel):
     bl_label = 'Version to out'
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
-    bl_context = 'render'
+    bl_context = 'output'
 
     def draw(self, context):
         layout = self.layout
