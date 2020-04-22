@@ -1,5 +1,5 @@
 = blender addon for rendering to versioned output folders
-:revnumber: 0.3.2
+:revnumber: 1.0.0
 
 When you change frame or when you load a new file this addon will look for a `VERSION.txt` file next to the blend file.
 If found, it will set the output to be `target/{version}/{name}/{sceneName}/{basename}`, where `name` is the name of the file,  `basename` was the original basename as specified on the `out` field.
