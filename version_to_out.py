@@ -28,6 +28,7 @@ def update_out_from_version(scene):
     base_dir = path.dirname(filepath)
 
     version_path = path.join(base_dir, version_file)
+
     if not path.isfile(path.join(base_dir, version_path)):
         return
 
@@ -44,11 +45,11 @@ def update_out_from_version(scene):
         markers = [m for m in sorted(list(scene.timeline_markers), key=lambda m: m.frame) if m.frame <= scene.frame_current]
         if len(markers):
             last_marker = markers[-1]
-            scene.render.filepath = '//target/{}/{}/{}/{}'.format(version, name, last_marker.name, basename)
+            scene.render.filepath = '//target/{}/{}/{}/{}/{}'.format(version, name, scene.name, last_marker.name, basename)
         else:
-            scene.render.filepath = '//target/{}/{}/{}'.format(version, name, basename)
+            scene.render.filepath = '//target/{}/{}/{}/{}'.format(version, name, scene.name, basename)
     else:
-        scene.render.filepath = '//target/{}/{}/{}'.format(version, name, basename)
+        scene.render.filepath = '//target/{}/{}/{}/{}'.format(version, name, scene.name, basename)
 
 @persistent
 def flush_version_cache(scene):
