@@ -1,2 +1,3 @@
 *.blend
 target
+__pycache__
