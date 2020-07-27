@@ -16,26 +16,25 @@ import bpy
 version_map = {}
 version_file = 'VERSION.txt'
 
-@persistent
-def update_out_from_version(scene):
-
+def to_versioned_filepath(scene, basename=None):
     global version_map
 
-    if scene is None:
-        scene = bpy.context.scene
 
     filepath = bpy.data.filepath
     base_dir = path.dirname(filepath)
-
     version_path = path.join(base_dir, version_file)
-
-    if not path.isfile(path.join(base_dir, version_path)):
-        return
 
     base = path.basename(filepath)
     name, ext = path.splitext(base)
 
-    basename = path.basename(scene.render.filepath)
+    if scene is None:
+        scene = bpy.context.scene
+
+    if not basename:
+        basename = path.basename(scene.render.filepath)
+
+    if not path.isfile(path.join(base_dir, version_path)):
+        return
 
     version = version_map.get(version_path)
     if not version:
@@ -45,11 +44,20 @@ def update_out_from_version(scene):
         markers = [m for m in sorted(list(scene.timeline_markers), key=lambda m: m.frame) if m.frame <= scene.frame_current]
         if len(markers):
             last_marker = markers[-1]
-            scene.render.filepath = '//target/{}/{}/{}/{}/{}'.format(version, name, scene.name, last_marker.name, basename)
+            filepath = '//target/{}/{}/{}/{}/{}'.format(version, name, scene.name, last_marker.name, basename)
         else:
-            scene.render.filepath = '//target/{}/{}/{}/{}'.format(version, name, scene.name, basename)
+            filepath = '//target/{}/{}/{}/{}'.format(version, name, scene.name, basename)
     else:
-        scene.render.filepath = '//target/{}/{}/{}/{}'.format(version, name, scene.name, basename)
+        filepath = '//target/{}/{}/{}/{}'.format(version, name, scene.name, basename)
+
+    return filepath
+
+@persistent
+def update_out_from_version(scene):
+    if scene is None:
+        scene = bpy.context.scene
+
+    scene.render.filepath = to_versioned_filepath(scene)
 
 @persistent
 def flush_version_cache(scene):
