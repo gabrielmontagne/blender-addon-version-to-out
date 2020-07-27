@@ -1,6 +1,8 @@
 = blender addon for rendering to versioned output folders
 :revnumber: 2.0.0
 
+== Version
+
 When you change frame or when you load a new file this addon will look for a `VERSION.txt` file next to the blend file.
 If found, it will set the output to be `target/{version}/{name}/{sceneName}/{basename}`, where `name` is the name of the file,  `basename` was the original basename as specified on the `out` field.
 
@@ -13,3 +15,8 @@ If this is checked, then the version will change with the last timeline mark fro
 
 The pattern will be `//target/{version}/{name}/{sceneName}/{marker}/{basename}`
 This will, effectively, nest the frames per mark.
+
+== Mixdown
+
+An operator `sound.versioned_mixdown` _Mixdown to versioned file_ is also included.
+It will create an `audio.flac` file in the target folder for the versioned scene.
