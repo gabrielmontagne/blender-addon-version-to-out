@@ -16,7 +16,7 @@ import bpy
 version_map = {}
 version_file = 'VERSION.txt'
 
-def to_versioned_filepath(scene, basename=None):
+def to_versioned_filepath(scene, basename=None, use_markers=True):
     global version_map
 
 
@@ -40,7 +40,7 @@ def to_versioned_filepath(scene, basename=None):
     if not version:
         version_map[version_path] = version = open(version_path, 'r').read().strip()
 
-    if scene.subfolder_per_mark:
+    if use_markers and scene.subfolder_per_mark:
         markers = [m for m in sorted(list(scene.timeline_markers), key=lambda m: m.frame) if m.frame <= scene.frame_current]
         if len(markers):
             last_marker = markers[-1]
@@ -59,7 +59,7 @@ class RENDER_SOUND_OT_versioned_mixdown(Operator):
 
     def execute(self, context):
         print('executed electrocuted!!!')
-        print('will be', to_versioned_filepath(context.scene, 'audio.flac'))
+        print('will be', to_versioned_filepath(context.scene, 'audio.flac', False))
 
         return {'FINISHED'}
 
