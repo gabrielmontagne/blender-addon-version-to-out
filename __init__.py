@@ -10,6 +10,7 @@ bl_info = {
 from bpy.app.handlers import persistent
 from bpy.types import Panel, Scene, Operator
 from bpy.props import BoolProperty
+from bpy import ops
 from os import path
 import bpy
 
@@ -58,9 +59,9 @@ class RENDER_SOUND_OT_versioned_mixdown(Operator):
     bl_label = 'Mixdown to versioned file'
 
     def execute(self, context):
-        print('executed electrocuted!!!')
-        print('will be', to_versioned_filepath(context.scene, 'audio.flac', False))
-
+        filepath = to_versioned_filepath(context.scene, 'audio.flac', False)
+        print('Mixing down to', filepath)
+        bpy.ops.sound.mixdown(filepath=filepath, codec='FLAC', relative_path=True)
         return {'FINISHED'}
 
 @persistent
