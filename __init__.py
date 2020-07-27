@@ -9,9 +9,10 @@ bl_info = {
 
 from bpy.app.handlers import persistent
 from bpy.types import Panel, Scene, Operator
+from bpy.path import abspath, basename
 from bpy.props import BoolProperty
 from bpy import ops
-from os import path
+from os import path, makedirs
 import bpy
 
 version_map = {}
@@ -60,7 +61,9 @@ class RENDER_SOUND_OT_versioned_mixdown(Operator):
 
     def execute(self, context):
         filepath = to_versioned_filepath(context.scene, 'audio.flac', False)
-        print('Mixing down to', filepath)
+        folder, name = path.split(abspath(filepath))
+        makedirs(folder, exist_ok=True)
+        print(f'Mixing down to {name} on {folder}')
         bpy.ops.sound.mixdown(filepath=filepath, codec='FLAC', relative_path=True)
         return {'FINISHED'}
 
