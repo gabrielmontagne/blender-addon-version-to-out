@@ -8,7 +8,7 @@ bl_info = {
     }
 
 from bpy.app.handlers import persistent
-from bpy.types import Panel, Scene
+from bpy.types import Panel, Scene, Operator
 from bpy.props import BoolProperty
 from os import path
 import bpy
@@ -52,6 +52,17 @@ def to_versioned_filepath(scene, basename=None):
 
     return filepath
 
+
+class RENDER_SOUND_OT_versioned_mixdown(Operator):
+    bl_idname = 'sound.versioned_mixdown'
+    bl_label = 'Mixdown to versioned file'
+
+    def execute(self, context):
+        print('executed electrocuted!!!')
+        print('will be', to_versioned_filepath(context.scene, 'audio.flac'))
+
+        return {'FINISHED'}
+
 @persistent
 def update_out_from_version(scene):
     if scene is None:
@@ -86,6 +97,7 @@ def register():
         default=False)
 
     bpy.utils.register_class(VERSION_TO_OUT_PT_config)
+    bpy.utils.register_class(RENDER_SOUND_OT_versioned_mixdown)
 
     bpy.app.handlers.save_pre.append(flush_version_cache)
     bpy.app.handlers.frame_change_pre.append(update_out_from_version)
@@ -96,6 +108,8 @@ def unregister():
     bpy.app.handlers.frame_change_pre.remove(update_out_from_version)
     bpy.app.handlers.load_post.remove(update_out_from_version)
     bpy.app.handlers.save_pre.remove(flush_version_cache)
+
+    bpy.utils.unregister_class(RENDER_SOUND_OT_versioned_mixdown)
     bpy.utils.unregister_class(VERSION_TO_OUT_PT_config)
 
 if __name__ == "__main__":
