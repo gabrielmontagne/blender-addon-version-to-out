@@ -36,7 +36,7 @@ def to_versioned_filepath(scene, basename=None, use_markers=True):
         basename = path.basename(scene.render.filepath)
 
     if not path.isfile(path.join(base_dir, version_path)):
-        return
+        return scene.render.filepath
 
     version = version_map.get(version_path)
     if not version:
