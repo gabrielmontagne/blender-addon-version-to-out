@@ -6,6 +6,9 @@
 When you change frame or when you load a new file this addon will look for a `VERSION.txt` file next to the blend file.
 If found, it will set the output to be `target/{version}/{name}/{sceneName}/{basename}`, where `name` is the name of the file,  `basename` was the original basename as specified on the `out` field.
 
+If _add git branch_ is enabled, the branch name will be added as well.
+The default is True.
+
 This will be kept in lock when the file is opened and on every frame change.
 
 WARNING: the `VERSION.txt` will only be read once per session and on file save per file — for performance reasons..

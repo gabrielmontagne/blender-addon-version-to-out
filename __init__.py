@@ -7,12 +7,14 @@ bl_info = {
     "category": "Render"
     }
 
+from bpy import ops
 from bpy.app.handlers import persistent
-from bpy.types import Panel, Scene, Operator
 from bpy.path import abspath, basename
 from bpy.props import BoolProperty
-from bpy import ops
+from bpy.types import Panel, Scene, Operator
 from os import path, makedirs
+from shlex import split
+from subprocess import check_output
 import bpy
 
 version_map = {}
@@ -20,7 +22,6 @@ version_file = 'VERSION.txt'
 
 def to_versioned_filepath(scene, basename=None, use_markers=True):
     global version_map
-
 
     filepath = bpy.data.filepath
     base_dir = path.dirname(filepath)
@@ -40,7 +41,12 @@ def to_versioned_filepath(scene, basename=None, use_markers=True):
 
     version = version_map.get(version_path)
     if not version:
-        version_map[version_path] = version = open(version_path, 'r').read().strip()
+
+        version = open(version_path, 'r').read().strip()
+        if scene.add_git_branch:
+            version = '{}/{}'.format(check_output(split('git branch --show-current')).decode('utf8').strip(), version)
+
+        version_map[version_path] = version
 
     if use_markers and scene.subfolder_per_mark:
         markers = [m for m in sorted(list(scene.timeline_markers), key=lambda m: m.frame) if m.frame <= scene.frame_current]
@@ -53,7 +59,6 @@ def to_versioned_filepath(scene, basename=None, use_markers=True):
         filepath = '//target/{}/{}/{}/{}'.format(version, name, scene.name, basename)
 
     return filepath
-
 
 class RENDER_SOUND_OT_versioned_mixdown(Operator):
     bl_idname = 'sound.versioned_mixdown'
@@ -92,6 +97,11 @@ class VERSION_TO_OUT_PT_config(Panel):
         row = layout.row()
         row.label(text='Create subfolders per mark')
         row.prop(context.scene, "subfolder_per_mark", text="")
+
+        row = layout.row()
+        row.label(text='Add git branch')
+        row.prop(context.scene, "add_git_branch", text="")
+
         row = layout.row()
         row.prop(rd, "filepath", text="")
 
@@ -99,6 +109,10 @@ def register():
     Scene.subfolder_per_mark = BoolProperty(
         name='Nest in subfolders per mark',
         default=False)
+
+    Scene.add_git_branch = BoolProperty(
+        name='Add git branch to version',
+        default=True)
 
     bpy.utils.register_class(VERSION_TO_OUT_PT_config)
     bpy.utils.register_class(RENDER_SOUND_OT_versioned_mixdown)
@@ -108,7 +122,8 @@ def register():
     bpy.app.handlers.load_post.append(update_out_from_version)
 
 def unregister():
-    del Scene.subfolder_per_mark 
+    del Scene.subfolder_per_mark
+    del Scene.add_git_branch
     bpy.app.handlers.frame_change_pre.remove(update_out_from_version)
     bpy.app.handlers.load_post.remove(update_out_from_version)
     bpy.app.handlers.save_pre.remove(flush_version_cache)
