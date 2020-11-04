@@ -62,7 +62,7 @@ def to_versioned_filepath(scene, basename=None, use_markers=True):
 
 class RENDER_SOUND_OT_versioned_mixdown(Operator):
     bl_idname = 'sound.versioned_mixdown'
-    bl_label = 'Mixdown to versioned file'
+    bl_label = 'Mixdown audio and sound to versioned file'
 
     def execute(self, context):
         filepath = to_versioned_filepath(context.scene, 'audio.flac', False)
