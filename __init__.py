@@ -30,7 +30,7 @@ def to_versioned_filepath(scene, basename=None, use_markers=True):
     base = path.basename(filepath)
     name, ext = path.splitext(base)
 
-    if scene is None:
+    if not scene:
         scene = bpy.context.scene
 
     if not basename:
@@ -73,17 +73,15 @@ class RENDER_SOUND_OT_versioned_mixdown(Operator):
         return {'FINISHED'}
 
 @persistent
-def update_out_from_version(scene):
-    if scene is None:
-        scene = bpy.context.scene
-
+def update_out_from_version(_):
+    scene = bpy.context.scene
     scene.render.filepath = to_versioned_filepath(scene)
 
 @persistent
-def flush_version_cache(scene):
+def flush_version_cache():
     global version_map
     version_map = {}
-    update_out_from_version(scene)
+    update_out_from_version()
 
 class VERSION_TO_OUT_PT_config(Panel):
     bl_label = 'Version to out'
