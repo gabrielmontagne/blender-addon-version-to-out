@@ -73,12 +73,12 @@ class RENDER_SOUND_OT_versioned_mixdown(Operator):
         return {'FINISHED'}
 
 @persistent
-def update_out_from_version(_):
+def update_out_from_version(_=None, __=None):
     scene = bpy.context.scene
     scene.render.filepath = to_versioned_filepath(scene)
 
 @persistent
-def flush_version_cache():
+def flush_version_cache(_):
     global version_map
     version_map = {}
     update_out_from_version()
